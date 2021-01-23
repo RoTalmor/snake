@@ -12,18 +12,16 @@ x1_change = 0
 y1_change = 0
 
 clock = pygame.time.Clock()
-snakelst = []
 
 
 class game:
-    def __init__(self):
-        dis_width = 300
-        dis_height = 200
-        dis=pygame.display.set_mode((dis_width,dis_height))
+    def __init__(self, w=300,h=200):
+        self.dis_width = w
+        self.dis_height = h
+        dis=pygame.display.set_mode((self.dis_width,self.dis_height))
         pygame.display.update()
         pygame.display.set_caption('Snake game')
         self.board = dis
-        snakelst = []
         self.isfood = False
         self.food = None
         self.cp = (0,0)
@@ -34,16 +32,14 @@ class game:
         
             
         self.played = False
-        self.snakelst = snakelst
-        x = random.randint(0,dis_width / 10 - 1) * 10
-        y = random.randint(0,dis_height / 10 - 1) * 10
-        self.addsnake((x,y), blue)
+        self.snakelst = []
+        x_srart = random.randint(0,self.dis_width / 10 - 1) * 10
+        y_start = random.randint(0,self.dis_height / 10 - 1) * 10
+        self.addsnake((x_srart,y_start), blue)
         self.game_over = False
         self.cp = (0,0)
         while not self.game_over:
             self.play() 
-    def moveright(self):
-        print('right')
 
     def addsnake(self,p, color):
         s = snake(p, color)
@@ -108,14 +104,6 @@ class game:
                         self.x1_change = -10
                         self.y1_change = 0
                         self.cp = (self.x1_change,self.y1_change)
-                        self.movesnake()
-                        self.drawsnake()
-                        self.played = True
-                        for i in range(1,len(self.snakelst)):
-                            if self.snakelst[0].p == self.snakelst[i].p:
-                                self.game_over = True
-                        if self.x1 >= self.board.get_width() or self.x1 < 0 or self.y1 >= self.board.get_height() or self.y1 < 0:
-                            self.game_over = True
                 elif event.key == pygame.K_RIGHT:
                     print('RIGHT')
                     if self.cp[0] == 0:
@@ -124,12 +112,6 @@ class game:
                         self.cp = (self.x1_change,self.y1_change)
                         self.movesnake()
                         self.drawsnake()
-                        self.played = True
-                        for i in range(1,len(self.snakelst)):
-                            if self.snakelst[0].p == self.snakelst[i].p:
-                                self.game_over = True
-                        if self.x1 >= self.board.get_width() or self.x1 < 0 or self.y1 >= self.board.get_height() or self.y1 < 0:
-                            self.game_over = True
                 elif event.key == pygame.K_UP:
                     print('UP')
                     if self.cp[1] == 0:
@@ -138,12 +120,6 @@ class game:
                         self.cp = (self.x1_change,self.y1_change)
                         self.movesnake()
                         self.drawsnake()
-                        self.played = True
-                        for i in range(1,len(self.snakelst)):
-                            if self.snakelst[0].p == self.snakelst[i].p:
-                                self.game_over = True
-                        if self.x1 >= self.board.get_width() or self.x1 < 0 or self.y1 >= self.board.get_height() or self.y1 < 0:
-                            self.game_over = True
                 elif event.key == pygame.K_DOWN:
                     print('DOWN')
                     if self.cp[1] == 0:
@@ -152,20 +128,22 @@ class game:
                         self.cp = (self.x1_change,self.y1_change)
                         self.movesnake()
                         self.drawsnake()
-                        self.played = True
-                        for i in range(1,len(self.snakelst)):
-                            if self.snakelst[0].p == self.snakelst[i].p:
-                                self.game_over = True
-                        if self.x1 >= self.board.get_width() or self.x1 < 0 or self.y1 >= self.board.get_height() or self.y1 < 0:
-                            self.game_over = True
+                    
+
+                self.played = True
+                for i in range(1,len(self.snakelst)):
+                    if self.snakelst[0].p == self.snakelst[i].p:
+                        self.game_over = True
+                if self.x1 >= self.board.get_width() or self.x1 < 0 or self.y1 >= self.board.get_height() or self.y1 < 0:
+                    self.game_over = True
 
         if not self.played:
             self.movesnake()
         
 
         self.drawsnake()
-        for i in range(1,len(snakelst)):
-            if snakelst[0].p == snakelst[i].p:
+        for i in range(1,len(self.snakelst)):
+            if self.snakelst[0].p == self.snakelst[i].p:
                 self.game_over = True
         if self.x1 >= self.board.get_width() or self.x1 < 0 or self.y1 >= self.board.get_height() or self.y1 < 0:
             self.game_over = True
